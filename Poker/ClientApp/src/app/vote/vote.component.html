@@ -1,0 +1,14 @@
+<div>
+  Hello World, Vote!  
+</div>
+
+<label for="inputUserName">User Name</label>
+<input type="text" id="inputUserName" [(ngModel)]="InputUserName" />
+
+<label for="inputMessage">Message</label>
+<input type="text" id="inputMessage" [(ngModel)]="InputMessage" />
+
+<p>{{UserName}}</p>
+<p>{{Message}}</p>
+
+<button (click)="SendMessage()">Send Message</button>
