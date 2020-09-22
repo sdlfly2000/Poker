@@ -10,9 +10,10 @@ import { Vote } from './models/vote.model'
 export class VoteComponent {
 
   public vote: Vote;
+  public isVote: boolean;
 
   public UserName: string;
-  public Message: string;
+  public Message: number;
 
   public InputUserName: string;
   public InputMessage: string;
@@ -33,9 +34,17 @@ export class VoteComponent {
   }
 
   public CreateOrGetSession(sessionId:string): void {
-    this.voteService.CreateOrGetSession(sessionId).then((vote: Vote) => {
-       this.vote = vote;
+    this.voteService.CreateOrGetSession(sessionId).then(
+      (vote: string) => {
+        this.vote = JSON.parse(vote);
+        this.isVote = true;
     });
+  }
+
+  public SayHello(): void {
+    this.voteService.Greeting().then((msg: number) => {
+      this.Message = msg;
+    })
   }
 
   private InitialEvents(): void {

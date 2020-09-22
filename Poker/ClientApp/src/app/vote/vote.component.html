@@ -11,7 +11,8 @@
 <p>{{UserName}}</p>
 <p>{{Message}}</p>
 
-<p *ngIf="vote">{{vote.sessionId}}</p>
+<div *ngIf="vote">{{vote.SessionId}}</div>
 
 <button (click)="SendMessage()">Send Message</button>
 <button (click)="CreateOrGetSession()">Create a new session</button>
+<button (click)="SayHello()">Say Hello</button>
