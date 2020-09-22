@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-
-import * as signalR from '@microsoft/signalr';
+import { VoteService } from './vote.service';
+import { Vote } from './models/vote.model'
 
 @Component({
   selector: 'app-vote',
@@ -9,7 +9,7 @@ import * as signalR from '@microsoft/signalr';
 })
 export class VoteComponent {
 
-  private connection: signalR.HubConnection;
+  public vote: Vote;
 
   public UserName: string;
   public Message: string;
@@ -19,24 +19,26 @@ export class VoteComponent {
 
   public ErrorMessage: string;
 
-  constructor() {
-    this.connection = new signalR.HubConnectionBuilder()
-      .withUrl('/hub')
-      .build();
-
-    this.connection.on('messageReceived', (userName: string, message: string) => {
-      this.UserName = userName;
-      this.Message = message;
-    });
-
-    this.connection.start().catch(err => this.ErrorMessage = err);
+  constructor(private voteService: VoteService) {
+    this.InitialEvents();
+    this.voteService.StartConnection();
   }
 
   public SendMessage(): void {
-    this.connection.send("NewMessage", this.InputUserName, this.InputMessage)
+    this.voteService.Send("NewMessage")
       .then(() => {
         this.InputMessage = "";
         this.InputUserName = "";
       });
+  }
+
+  public CreateOrGetSession(sessionId:string): void {
+    this.voteService.CreateOrGetSession(sessionId).then((vote: Vote) => {
+       this.vote = vote;
+    });
+  }
+
+  private InitialEvents(): void {
+    this.voteService.SetEventOn("messageReceived", (vote: Vote) => this.vote = vote);
   }
 }

@@ -19,7 +19,7 @@ import { VoteComponent } from './vote/vote.component';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: VoteComponent, pathMatch: 'full' },
+      { path: '', component: VoteComponent, pathMatch: 'full' }
     ])
   ],
   providers: [],
