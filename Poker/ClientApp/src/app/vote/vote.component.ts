@@ -5,7 +5,15 @@ import { Vote } from './models/vote.model'
 
 @Component({
   selector: 'app-vote',
-  templateUrl: './vote.component.html'
+  templateUrl: './vote.component.html',
+  styles: [
+    `
+      [nz-button] {
+        margin-right: 8px;
+        margin-bottom: 12px;
+      }
+    `
+  ]
 })
 export class VoteComponent {
 
