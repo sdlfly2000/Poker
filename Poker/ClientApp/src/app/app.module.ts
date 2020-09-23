@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { VoteComponent } from './vote/vote.component';
 
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,8 @@ import { VoteComponent } from './vote/vote.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: VoteComponent, pathMatch: 'full' }
-    ])
+    ]),
+    NgZorroAntdModule
   ],
   providers: [],
   bootstrap: [AppComponent]
