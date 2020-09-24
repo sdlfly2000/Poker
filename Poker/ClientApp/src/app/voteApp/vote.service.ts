@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Vote } from './models/vote.model';
 
 import * as signalR from '@microsoft/signalr';
-import { promise } from 'protractor';
+import { IClient } from './models/client.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,7 @@ export class VoteService {
       .build();
   }
 
-  public GetConnection(): signalR.HubConnection {
+  get GetConnection(): signalR.HubConnection {
     return this.connection;
   }
 
@@ -33,8 +32,12 @@ export class VoteService {
     return this.connection.send(messageName);
   }
 
-  public CreateOrGetSession(sessionId: string): Promise<any> {
-    return this.connection.invoke<any>("CreateOrGetSession", sessionId);
+  public CreateSession(currentClient: IClient): Promise<any> {
+    return this.connection.invoke<any>("CreateSession", currentClient);
+  }
+
+  public GetSession(sessionId?: string): Promise<any> {
+    return this.connection.invoke<any>("GetSession", sessionId);
   }
 
   public Greeting(): Promise<any> {

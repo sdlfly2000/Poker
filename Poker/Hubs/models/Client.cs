@@ -4,6 +4,8 @@ namespace Poker.Hubs.models
 {
     public class Client
     {
+        public string ConnectionId;
+
         public string UserName;
 
         public int Vote;
