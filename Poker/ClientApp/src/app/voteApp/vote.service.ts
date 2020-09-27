@@ -20,12 +20,12 @@ export class VoteService {
 
   private CreateConnection(path:string): signalR.HubConnection {
     return new signalR.HubConnectionBuilder()
-      .withUrl('/hub')
+      .withUrl(path)
       .build();
   }
 
-  public StartConnection(): void {
-    this.connection.start().catch(err => this.errorMessage = err);
+  public StartConnection(): Promise<void> {
+    return this.connection.start();
   }
 
   public SetEventOn(eventName: string, newMethod: (...args: any[]) => void): void {

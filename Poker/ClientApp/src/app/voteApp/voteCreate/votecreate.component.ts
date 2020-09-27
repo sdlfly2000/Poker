@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { VoteService } from '../vote.service';
@@ -15,7 +15,6 @@ export class VoteCreateComponent implements OnInit {
   private VoteUrl: string = "vote/";
 
   public createForm!: FormGroup;
-  public CurrentUserName: string;
 
   constructor(
     private voteService: VoteService,
@@ -23,7 +22,7 @@ export class VoteCreateComponent implements OnInit {
     private formBuilder: FormBuilder) {
 
     this.createForm = this.formBuilder.group({
-      userName: [null, [Validators.required]]
+      userName: new FormControl(null, Validators.required)
     });
   }
 
@@ -37,7 +36,7 @@ export class VoteCreateComponent implements OnInit {
       var currentClient = new Client();
 
       currentClient.ConnectionId = this.voteService.GetConnection.connectionId;
-      currentClient.UserName = this.CurrentUserName;
+      currentClient.UserName = this.createForm.get('userName').value;
       currentClient.IsReady = false;
 
       this.voteService.CreateSession(JSON.stringify(currentClient)).then((sessionId: string) => {

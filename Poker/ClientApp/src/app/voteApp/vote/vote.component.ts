@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { VoteService } from '../vote.service';
 import { IVote } from '../models/vote.model'
@@ -7,12 +8,13 @@ import { IClient, Client } from '../models/client.model'
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
-  styleUrls: ["./vote.component.css"
-  ]
+  styleUrls: ["./vote.component.css"]
 })
 export class VoteComponent {
 
-  public CurrentClient: IClient
+  public CurrentClient: IClient;
+
+  public SeesionId: string;
 
   public vote: IVote;
   public isVote: boolean;
@@ -25,12 +27,14 @@ export class VoteComponent {
 
   public ErrorMessage: string;
 
-  constructor(private voteService: VoteService) {
-    this.InitialEvents();
-    this.voteService.StartConnection();
+  constructor(
+    private voteService: VoteService,
+    private activatedRoute: ActivatedRoute) {
 
-    this.CurrentClient = new Client();
-    this.CurrentClient.ConnectionId = this.voteService.GetConnection.connectionId;
+    this.SeesionId = this.activatedRoute.snapshot.paramMap.get("sessionId");
+    this.GetSession(this.SeesionId);
+    
+    this.InitialEvents();
   }
 
   public GetSession(sessionId:string): void {
