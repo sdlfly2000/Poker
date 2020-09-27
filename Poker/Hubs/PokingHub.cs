@@ -31,14 +31,15 @@ namespace Poker.Hubs
             return result;
         }
 
-        public string CreateSession(Client client)
+        public string CreateSession(string client)
         {
+            var oClient = JsonConvert.DeserializeObject<Client>(client);
             var guid = Guid.NewGuid();
             var vote = new Vote
             {
                 SessionId = guid.ToString(),
-                Clients = new List<Client> { client },
-                Host = client,
+                Clients = new List<Client> { oClient },
+                Host = oClient,
                 IsAlive = true
             };
 

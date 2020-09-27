@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import * as signalR from '@microsoft/signalr';
-import { IClient } from './models/client.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,28 +10,33 @@ export class VoteService {
   public errorMessage: string;
 
   constructor() {
-    this.connection = new signalR.HubConnectionBuilder()
-      .withUrl('/hub')
-      .build();
+    this.connection = this.CreateConnection('/hub');
+    this.connection.start().catch(err => this.errorMessage = err);
   }
 
   get GetConnection(): signalR.HubConnection {
     return this.connection;
   }
 
-  public SetEventOn(eventName: string, newMethod: (...args: any[]) => void): void {
-    this.connection.on(eventName, newMethod);
+  private CreateConnection(path:string): signalR.HubConnection {
+    return new signalR.HubConnectionBuilder()
+      .withUrl('/hub')
+      .build();
   }
 
   public StartConnection(): void {
     this.connection.start().catch(err => this.errorMessage = err);
   }
 
+  public SetEventOn(eventName: string, newMethod: (...args: any[]) => void): void {
+    this.connection.on(eventName, newMethod);
+  }
+
   public Send(messageName: string): Promise<void> {
     return this.connection.send(messageName);
   }
 
-  public CreateSession(currentClient: IClient): Promise<any> {
+  public CreateSession(currentClient: string): Promise<any> {
     return this.connection.invoke<any>("CreateSession", currentClient);
   }
 

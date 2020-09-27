@@ -33,20 +33,25 @@ export class VoteCreateComponent implements OnInit {
 
   public CreateSession(): void {
 
-    //for (const i in this.createForm.controls) {
-    //  this.createForm.controls[i].markAsDirty();
-    //  this.createForm.controls[i].updateValueAndValidity();
-    //}
+    if (this.ValidateForm(this.createForm)) {
+      var currentClient = new Client();
 
+      currentClient.ConnectionId = this.voteService.GetConnection.connectionId;
+      currentClient.UserName = this.CurrentUserName;
+      currentClient.IsReady = false;
 
-    //var currentClient = new Client();
+      this.voteService.CreateSession(JSON.stringify(currentClient)).then((sessionId: string) => {
+        this.router.navigateByUrl(this.VoteUrl + sessionId);
+      });
+    }
+  }
 
-    //currentClient.ConnectionId = this.voteService.GetConnection.connectionId;
-    //currentClient.UserName = this.CurrentUserName;
-    //currentClient.IsReady = false;
+  private ValidateForm(form: FormGroup): boolean {
+    for (const i in form.controls) {
+      form.controls[i].markAsDirty();
+      form.controls[i].updateValueAndValidity();
+    }
 
-    //this.voteService.CreateSession(currentClient).then((sessionId: string) => {
-    //  this.router.navigateByUrl(this.VoteUrl + sessionId);
-    //});
+    return form.valid;
   }
 }
