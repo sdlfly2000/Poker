@@ -1,6 +1,6 @@
-﻿using Poker.Hubs.models;
-using System;
+﻿using System;
 using Microsoft.Extensions.Caching.Memory;
+using Poker.Models;
 
 namespace Poker.Cache
 {

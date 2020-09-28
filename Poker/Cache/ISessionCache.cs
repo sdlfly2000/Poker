@@ -1,4 +1,4 @@
-﻿using Poker.Hubs.models;
+﻿using Poker.Models;
 using System;
 
 namespace Poker.Cache

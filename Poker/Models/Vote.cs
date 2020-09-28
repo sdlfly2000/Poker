@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Poker.Hubs.models
+namespace Poker.Models
 {
     public class Vote
     {

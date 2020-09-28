@@ -27,6 +27,7 @@
     <None Remove="ClientApp\src\app\voteApp\models\client.model.ts" />
     <None Remove="ClientApp\src\app\voteApp\models\vote.model.ts" />
     <None Remove="ClientApp\src\app\voteApp\voteCreate\votecreate.component.ts" />
+    <None Remove="ClientApp\src\app\voteApp\voteCreate\votecreate.service.ts" />
     <None Remove="ClientApp\src\app\voteApp\vote\vote.service.ts" />
   </ItemGroup>
 
@@ -35,10 +36,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\voteApp\models\vote.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\voteApp\vote.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\voteApp\voteCreate\votecreate.component.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <TypeScriptCompile Include="ClientApp\src\app\voteApp\voteCreate\votecreate.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

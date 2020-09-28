@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using System;
-using Poker.Hubs.models;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Poker.Cache;
 
@@ -29,23 +27,6 @@ namespace Poker.Hubs
             var result = JsonConvert.SerializeObject(vote);
 
             return result;
-        }
-
-        public string CreateSession(string client)
-        {
-            var oClient = JsonConvert.DeserializeObject<Client>(client);
-            var guid = Guid.NewGuid();
-            var vote = new Vote
-            {
-                SessionId = guid.ToString(),
-                Clients = new List<Client> { oClient },
-                Host = oClient,
-                IsAlive = true
-            };
-
-            _sessionCache.SetVote(guid, vote);
-
-            return vote.SessionId;
         }
     }
 }
