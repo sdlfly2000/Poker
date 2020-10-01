@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Client } from '../models/client.model';
 import { VoteCreateService } from './votecreate.service';
+import { Vote } from "../models/vote.model";
 
 @Component({
   selector: 'app-VoteCreate',
@@ -12,7 +12,7 @@ import { VoteCreateService } from './votecreate.service';
 })
 export class VoteCreateComponent implements OnInit {
 
-  private VoteControllerUrl: string = 'vote/'
+  private VoteControllerUrl: string = 'vote/';
   public createForm!: FormGroup;
 
   constructor(
@@ -31,27 +31,9 @@ export class VoteCreateComponent implements OnInit {
 
   public CreateSession(): void {
 
-    if (this.ValidateForm(this.createForm)) {
-      var currentClient = new Client();
-
-      currentClient.ConnectionId = null;
-      currentClient.Vote = null;
-      currentClient.UserName = this.createForm.get('userName').value;
-      currentClient.IsReady = false;
-
-      this.voteCreateService.CreateSession(currentClient)
-        .then((sessionId) => {
-          this.router.navigateByUrl(this.VoteControllerUrl + sessionId);
-        });
-    }
-  }
-
-  private ValidateForm(form: FormGroup): boolean {
-    for (const i in form.controls) {
-      form.controls[i].markAsDirty();
-      form.controls[i].updateValueAndValidity();
-    }
-
-    return form.valid;
+  this.voteCreateService.CreateSession()
+      .then((vote: Vote) => {
+        this.router.navigateByUrl(this.VoteControllerUrl + vote.SessionId);
+      });
   }
 }

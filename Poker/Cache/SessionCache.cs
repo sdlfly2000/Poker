@@ -22,5 +22,12 @@ namespace Poker.Cache
         {
             return _memoryCache.Set(sessionId, vote) != null;
         }
+
+        public bool UpdateVote(Vote vote)
+        {
+            var sessionId = vote.SessionId;
+            _memoryCache.Remove(sessionId);
+            return _memoryCache.Set(sessionId, vote) != null;
+        }
     }
 }

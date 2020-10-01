@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System;
 using Newtonsoft.Json;
 using Poker.Cache;
+using Poker.Models;
 
 namespace Poker.Hubs
 {
@@ -15,18 +16,18 @@ namespace Poker.Hubs
             _sessionCache = sessionCache;
         }
 
-        public async Task NewMessage(string userName, string message)
+        public async Task Session(string userName, string message)
         {
             await Clients.All.SendAsync("messageReceived", userName, message);
         }
 
-        public string GetSession(string sessionId)
+        public string JoinSession(string client, string sessionId)
         {
+            var oClient = JsonConvert.DeserializeObject<Client>(client);
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
-
-            var result = JsonConvert.SerializeObject(vote);
-
-            return result;
+            vote.Clients.Add(oClient);
+            _sessionCache.UpdateVote(vote);
+            return JsonConvert.SerializeObject(vote);
         }
     }
 }

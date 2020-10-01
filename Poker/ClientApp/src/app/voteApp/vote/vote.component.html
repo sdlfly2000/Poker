@@ -1,3 +1,20 @@
+<div nz-row nzType="flex" nzJustify="center" *ngIf="!vote">
+  <form nz-form [nzLayout]="'inline'" [formGroup]="joinForm" (ngSubmit)="JoinSession()">
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="userName">User Name</nz-form-label>
+      <nz-form-control>
+        <input formControlName="userName" nz-input id="userName" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary">Join</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
+
+<div *ngIf="CurrentClient">
 <div nz-row>
   <h4 nz-title nzType="secondary">Session:</h4>
 </div>
@@ -14,3 +31,4 @@
 </div>
 
 <nz-divider></nz-divider>
+</div>

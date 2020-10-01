@@ -10,7 +10,7 @@ export class VoteService {
   public errorMessage: string;
 
   constructor() {
-    this.connection = this.CreateConnection('/hub');
+    this.connection = this.CreateConnection('/PokingHub');
     this.connection.start().catch(err => this.errorMessage = err);
   }
 
@@ -36,15 +36,11 @@ export class VoteService {
     return this.connection.send(messageName);
   }
 
-  public CreateSession(currentClient: string): Promise<any> {
-    return this.connection.invoke<any>("CreateSession", currentClient);
+  public JoinSession(currentClient: string, sessionId:string): Promise<any> {
+    return this.connection.invoke<any>("JoinSession", currentClient, sessionId);
   }
 
   public GetSession(sessionId?: string): Promise<any> {
     return this.connection.invoke<any>("GetSession", sessionId);
-  }
-
-  public Greeting(): Promise<any> {
-    return this.connection.invoke<any>("Greeting");
   }
 }

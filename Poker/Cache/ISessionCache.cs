@@ -8,5 +8,7 @@ namespace Poker.Cache
         bool SetVote(Guid sessionId, Vote vote);
 
         Vote GetVote(Guid sessionId);
+
+        bool UpdateVote(Vote vote);
     }
 }

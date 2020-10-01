@@ -64,7 +64,7 @@ namespace Poker
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
 
-                endpoints.MapHub<PokingHub>("/hub");
+                endpoints.MapHub<PokingHub>("/PokingHub");
             });
 
             app.UseSpa(spa =>

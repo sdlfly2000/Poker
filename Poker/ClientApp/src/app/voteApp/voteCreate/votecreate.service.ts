@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Client } from '../models/client.model';
+import { Vote } from "../models/vote.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class VoteCreateService {
 
   }
 
-  public CreateSession(client: Client): Promise<string> {
-    return this.httpClient.post<string>(this.CreateSeesionUrl, client).toPromise<string>();
+  public CreateSession(): Promise<Vote> {
+    return this.httpClient.get<Vote>(this.CreateSeesionUrl).toPromise();
   }
 }
