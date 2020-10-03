@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 import * as signalR from '@microsoft/signalr';
 
@@ -9,7 +11,7 @@ export class VoteService {
   private connection: signalR.HubConnection;
   public errorMessage: string;
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.connection = this.CreateConnection('/PokingHub');
     this.connection.start().catch(err => this.errorMessage = err);
   }
@@ -40,7 +42,7 @@ export class VoteService {
     return this.connection.invoke<any>("JoinSession", currentClient, sessionId);
   }
 
-  public GetSession(sessionId?: string): Promise<any> {
-    return this.connection.invoke<any>("GetSession", sessionId);
+  public GetSession(sessionId: string): Observable<boolean> {
+    return this.httpClient.get<boolean>('api/Vote/GetSession?sessionId=' + sessionId);
   }
 }

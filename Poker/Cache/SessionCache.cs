@@ -2,11 +2,10 @@
 using Microsoft.Extensions.Caching.Memory;
 using Poker.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Poker.Cache
 {
-    using System.Linq;
-
     public class SessionCache : ISessionCache
     {
         private readonly IMemoryCache _memoryCache;
@@ -21,24 +20,33 @@ namespace Poker.Cache
            return  _memoryCache.Get<Vote>(sessionId);
         }
 
-        public bool SetVote(Guid sessionId, Vote vote)
+        public Vote SetVote(Guid sessionId, Vote vote)
         {
-            return _memoryCache.Set(sessionId, vote) != null;
+            return _memoryCache.Set(sessionId, vote);
         }
 
-        public bool UpdateVote(Vote vote)
+        public Vote UpdateVote(Vote vote)
         {
             var sessionId = vote.SessionId;
             _memoryCache.Remove(sessionId);
-            return _memoryCache.Set(sessionId, vote) != null;
+            return _memoryCache.Set(sessionId, vote);
         }
 
         public Vote RemoveClient(string connectionId)
         {
-            var sessionId = GetAllSessionIds();
-            var votes = sessionId.Select(GetVote)
-                .Where(v => v.Clients.Any(c => c.ConnectionId.Equals(connectionId)))
-                .ToList();
+            var sessionId = GetAllSessionIds() ?? new List<Guid>();
+            var vote = sessionId
+                .Select(GetVote)
+                .FirstOrDefault(v => v.Clients.Any(c => c.ConnectionId.Equals(connectionId)));
+
+            if (vote != null)
+            {
+                var clientToRemove = vote.Clients.FirstOrDefault(c => c.ConnectionId.Equals(connectionId));
+                vote.Clients.Remove(clientToRemove);
+                return UpdateVote(vote);
+            }
+
+            return null;
         }
 
         public IList<Guid> GetAllSessionIds()
@@ -46,9 +54,15 @@ namespace Poker.Cache
             return _memoryCache.Get<IList<Guid>>("SessionIds");
         }
 
+        public bool IsSessionExist(string sessionId)
+        {
+            return GetAllSessionIds().Any(s => s.Equals(sessionId));
+        }
+        
         public IList<Guid> AddSessionId(Guid sessionId)
         {
-            var sessionIds = GetAllSessionIds();
+            var sessionIds = GetAllSessionIds() ?? new List<Guid>();
+
             if (!sessionIds.Any(s => s.Equals(sessionId)))
             {
                 sessionIds.Add(sessionId);

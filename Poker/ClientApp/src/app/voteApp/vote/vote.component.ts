@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { VoteService } from '../vote.service';
+import { VoteService } from './vote.service';
 import { Vote } from '../models/vote.model'
 import { Client } from '../models/client.model'
 
@@ -23,7 +23,8 @@ export class VoteComponent {
   constructor(
     private voteService: VoteService,
     private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {
 
     this.joinForm = this.formBuilder.group({
       userName: new FormControl(null, Validators.required)
@@ -32,6 +33,8 @@ export class VoteComponent {
     this.SeesionId = this.activatedRoute.snapshot.paramMap.get("sessionId");
     
     this.InitialEvents();
+
+    this.IsSessionCreated(this.SeesionId);
   }
   
   public JoinSession(): void {
@@ -51,6 +54,18 @@ export class VoteComponent {
     }
   }
 
+  private IsSessionCreated(sessionId: string): void {
+    this.voteService.GetSession(sessionId).subscribe(
+      (sessionId: boolean) => {
+        if (!sessionId) {
+          this.router.navigateByUrl("");
+        }
+      },
+      (error) => {
+        this.router.navigateByUrl("");
+      });
+  }
+
   private ValidateForm(form: FormGroup): boolean {
     for (const i in form.controls) {
       if (form.controls.hasOwnProperty(i)) {
@@ -63,6 +78,9 @@ export class VoteComponent {
   }
 
   private InitialEvents(): void {
-    this.voteService.SetEventOn("messageReceived", (vote: Vote) => this.vote = vote);
+    this.voteService.SetEventOn("NewClientJoin",
+      (vote: string) => {
+        this.vote = JSON.parse(vote);
+      });
   }
 }
