@@ -17,5 +17,7 @@ namespace Poker.Cache
         IList<Guid> AddSessionId(Guid sessionId);
 
         IList<Guid> GetAllSessionIds();
+
+        void RemoveSession(string sessionId);
     }
 }

@@ -49,6 +49,18 @@ namespace Poker.Cache
             return null;
         }
 
+        public void RemoveSession(string sessionId)
+        {
+            var sessionIds = GetAllSessionIds();
+            if (sessionIds.Any(s => s.Equals(sessionId)))
+            {
+                sessionIds.Remove(Guid.Parse(sessionId));
+                _memoryCache.Set("SessionIds", sessionIds);
+            }
+
+            _memoryCache.Remove(sessionId);
+        }
+
         public IList<Guid> GetAllSessionIds()
         {
             return _memoryCache.Get<IList<Guid>>("SessionIds");

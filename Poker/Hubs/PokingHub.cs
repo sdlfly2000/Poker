@@ -56,7 +56,13 @@ namespace Poker.Hubs
             var vote = _sessionCache.RemoveClient(connectionId);
             if (vote != null)
             {
+                Groups.RemoveFromGroupAsync(connectionId, vote.SessionId);
                 Clients.Group(vote.SessionId).SendAsync("NewClientJoin", JsonConvert.SerializeObject(vote));
+
+                if(vote.Clients.Count == 0)
+                {
+                    _sessionCache.RemoveSession(vote.SessionId);
+                }
             }
 
             return base.OnDisconnectedAsync(exception);
