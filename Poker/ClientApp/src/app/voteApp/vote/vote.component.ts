@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { VoteService } from '../vote.service';
-import { IVote, Vote } from '../models/vote.model'
-import { IClient, Client } from '../models/client.model'
+import { Vote } from '../models/vote.model'
+import { Client } from '../models/client.model'
 
 @Component({
   selector: 'app-vote',
@@ -15,17 +15,10 @@ export class VoteComponent {
 
   public joinForm!: FormGroup;
   public vote: Vote;
+
   public CurrentClient: Client;
-
   public SeesionId: string;
-
-  public UserName: string;
-  public Message: number;
-
-  public InputUserName: string;
-  public InputMessage: string;
-
-  public ErrorMessage: string;
+  public SelectedPoints: string;
 
   constructor(
     private voteService: VoteService,
@@ -60,14 +53,16 @@ export class VoteComponent {
 
   private ValidateForm(form: FormGroup): boolean {
     for (const i in form.controls) {
-      form.controls[i].markAsDirty();
-      form.controls[i].updateValueAndValidity();
+      if (form.controls.hasOwnProperty(i)) {
+        form.controls[i].markAsDirty();
+        form.controls[i].updateValueAndValidity();
+      }
     }
 
     return form.valid;
   }
 
   private InitialEvents(): void {
-    this.voteService.SetEventOn("messageReceived", (vote: IVote) => this.vote = vote);
+    this.voteService.SetEventOn("messageReceived", (vote: Vote) => this.vote = vote);
   }
 }

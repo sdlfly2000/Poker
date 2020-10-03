@@ -1,5 +1,6 @@
 ﻿using Poker.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Poker.Cache
 {
@@ -10,5 +11,11 @@ namespace Poker.Cache
         Vote GetVote(Guid sessionId);
 
         bool UpdateVote(Vote vote);
+
+        Vote RemoveClient(string connectionId);
+
+        IList<Guid> AddSessionId(Guid sessionId);
+
+        IList<Guid> GetAllSessionIds();
     }
 }

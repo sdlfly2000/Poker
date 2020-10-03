@@ -7,13 +7,19 @@ using Poker.Models;
 
 namespace Poker.Hubs
 {
+    using Poker.Hubs.Actions;
+
     public class PokingHub : Hub
     {
         private readonly ISessionCache _sessionCache;
+        private readonly IAddClientAction _addClientAction;
 
-        public PokingHub(ISessionCache sessionCache)
+        public PokingHub(
+            ISessionCache sessionCache, 
+            IAddClientAction addClientAction)
         {
             _sessionCache = sessionCache;
+            _addClientAction = addClientAction;
         }
 
         public async Task Session(string userName, string message)
@@ -25,9 +31,19 @@ namespace Poker.Hubs
         {
             var oClient = JsonConvert.DeserializeObject<Client>(client);
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
-            vote.Clients.Add(oClient);
-            _sessionCache.UpdateVote(vote);
+            _sessionCache.UpdateVote(_addClientAction.Add(vote, oClient));
             return JsonConvert.SerializeObject(vote);
         }
+
+        #region Override
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            var connectionId = Context.ConnectionId;
+            var vote = _sessionCache.
+
+        }
+
+        #endregion
     }
 }

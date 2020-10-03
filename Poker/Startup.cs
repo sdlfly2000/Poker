@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Poker.Cache;
 using Poker.Hubs;
+using Poker.Hubs.Actions;
 
 namespace Poker
 {
@@ -26,6 +27,7 @@ namespace Poker
             services.AddMemoryCache();
 
             services.AddTransient<ISessionCache, SessionCache>();
+            services.AddTransient<IAddClientAction, AddClientAction>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

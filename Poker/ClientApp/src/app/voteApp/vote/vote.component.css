@@ -2,3 +2,9 @@
   margin-right: 8px;
   margin-bottom: 12px;
 }
+
+[nz-radio-button] {
+  margin-left: 10px;
+  margin-bottom: 20px;
+  width: 100px;
+}
