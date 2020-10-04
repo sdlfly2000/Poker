@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import * as signalR from '@microsoft/signalr';
+import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +35,23 @@ export class VoteService {
     this.connection.on(eventName, newMethod);
   }
 
-  public Send(messageName: string): Promise<void> {
-    return this.connection.send(messageName);
-  }
-
   public JoinSession(currentClient: string, sessionId:string): Promise<any> {
     return this.connection.invoke<any>("JoinSession", currentClient, sessionId);
   }
 
+  public SetOpenToPublic(sessionId:string): void {
+    this.connection.send("SetOpenToPublic", sessionId);
+  }
+
+  public ClearVotes(sessionId: string): void {
+    this.connection.send("ClearVotes", sessionId);
+  }
+
   public GetSession(sessionId: string): Observable<boolean> {
     return this.httpClient.get<boolean>('api/Vote/GetSession?sessionId=' + sessionId);
+  }
+
+  public UpdateCurrentClient(currentClient: string, sessionId: string): void {
+    this.connection.send("UpdateCurrentClient", currentClient, sessionId);
   }
 }

@@ -4,7 +4,7 @@
     {
         public string ConnectionId { get; set; }
 
-        public int? Vote { get; set; }
+        public string? Vote { get; set; }
 
         public string UserName { get; set; }
 

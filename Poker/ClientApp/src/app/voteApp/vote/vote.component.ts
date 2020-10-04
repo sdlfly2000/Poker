@@ -17,8 +17,8 @@ export class VoteComponent {
   public vote: Vote;
 
   public CurrentClient: Client;
-  public SeesionId: string;
-  public SelectedPoints: string;
+  public SessionId: string;
+  public SelectedPoint: string;
 
   constructor(
     private voteService: VoteService,
@@ -30,11 +30,11 @@ export class VoteComponent {
       userName: new FormControl(null, Validators.required)
     });
 
-    this.SeesionId = this.activatedRoute.snapshot.paramMap.get("sessionId");
+    this.SessionId = this.activatedRoute.snapshot.paramMap.get("sessionId");
     
     this.InitialEvents();
 
-    this.IsSessionCreated(this.SeesionId);
+    this.IsSessionCreated(this.SessionId);
   }
   
   public JoinSession(): void {
@@ -46,12 +46,28 @@ export class VoteComponent {
       currentClient.UserName = this.joinForm.get('userName').value;
       currentClient.IsReady = false;
 
-      this.voteService.JoinSession(JSON.stringify(currentClient), this.SeesionId)
+      this.voteService.JoinSession(JSON.stringify(currentClient), this.SessionId)
         .then((vote: string) => {
           this.CurrentClient = currentClient;
           this.vote = JSON.parse(vote);
         });
     }
+  }
+
+  public OnSelectPoint(): void {
+    if (this.SelectedPoint != undefined) {
+      this.CurrentClient.Vote = this.SelectedPoint;
+      this.CurrentClient.IsReady = true;
+      this.voteService.UpdateCurrentClient(JSON.stringify(this.CurrentClient), this.SessionId);
+    }
+  }
+
+  public ShowVotes(): void {
+    this.voteService.SetOpenToPublic(this.SessionId);
+  }
+
+  public ClearVotes(): void {
+    this.voteService.ClearVotes(this.SessionId);
   }
 
   private IsSessionCreated(sessionId: string): void {

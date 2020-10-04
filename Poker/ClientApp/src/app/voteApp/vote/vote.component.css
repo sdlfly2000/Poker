@@ -8,3 +8,7 @@
   margin-bottom: 20px;
   width: 100px;
 }
+
+[nz-icon] {
+    font-size: 20px;
+}

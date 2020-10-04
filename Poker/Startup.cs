@@ -28,6 +28,7 @@ namespace Poker
 
             services.AddTransient<ISessionCache, SessionCache>();
             services.AddTransient<IAddClientAction, AddClientAction>();
+            services.AddTransient<IDispatchVoteAction, DispatchVoteAction>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

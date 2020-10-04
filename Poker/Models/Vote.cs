@@ -8,12 +8,13 @@ namespace Poker.Models
         {
             Clients = new List<Client>();
         }
+
         public string SessionId;
 
         public IList<Client> Clients;
 
         public Client Host;
 
-        public bool IsAlive;
+        public bool IsPublicOpen;
     }
 }

@@ -26,14 +26,14 @@
   <nz-divider></nz-divider>
 
   <div nz-row>
-    <button nz-button nz-col nzSpan="2" nzType="defalut">Clear Votes</button>
-    <button nz-button nz-col nzSpan="2" nzType="defalut">Show Votes</button>
+    <button nz-button nz-col nzSpan="2" nzType="defalut" (click)="ClearVotes()">Clear Votes</button>
+    <button nz-button nz-col nzSpan="2" nzType="defalut" (click)="ShowVotes()">Show Votes</button>
   </div>
 
   <nz-divider></nz-divider>
 
   <div>
-    <nz-radio-group [(ngModel)]="SelectedPoints" [nzButtonStyle]="'solid'">
+    <nz-radio-group [(ngModel)]="SelectedPoint" [nzButtonStyle]="'solid'" (ngModelChange)="OnSelectPoint()">
       <div nz-row nzType="flex">
         <label nz-radio-button nzValue="0">0 points</label>
         <label nz-radio-button nzValue="0.5">0.5 points</label>
@@ -64,14 +64,17 @@
           <tr>
             <th>Player</th>
             <th>Score</th>
-            <th>Connection Id</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let client of voteResults.data">
             <td>{{client.UserName}}</td>
             <td>{{client.Vote}}</td>
-            <td>{{client.ConnectionId}}</td>
+            <td>
+              <i nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#00FF7F'" *ngIf="client.IsReady"></i>
+              <i nz-icon [nzType]="'close-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#FF0000'" *ngIf="!client.IsReady"></i>
+            </td>
           </tr>
         </tbody>
       </nz-table>

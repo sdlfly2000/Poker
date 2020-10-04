@@ -1,13 +1,13 @@
 export class Client implements IClient {
     ConnectionId: string;
     UserName: string;
-    Vote: number;
+    Vote: string;
     IsReady: boolean;
 }
 
 export interface IClient {
   ConnectionId: string;
   UserName: string;
-  Vote: number;
+  Vote: string;
   IsReady: boolean;
 }

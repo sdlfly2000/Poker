@@ -10,6 +10,11 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { VoteComponent } from './voteApp/vote/vote.component';
 import { VoteCreateComponent } from './voteApp/voteCreate/votecreate.component';
 
+import { IconDefinition } from '@ant-design/icons-angular';
+import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons-angular/icons';
+const icons: IconDefinition[] = [CheckCircleTwoTone, CloseCircleTwoTone];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,9 +31,13 @@ import { VoteCreateComponent } from './voteApp/voteCreate/votecreate.component';
       { path: '', component: VoteCreateComponent, pathMatch: 'full' },
       { path: 'vote/:sessionId', component: VoteComponent, pathMatch: 'full' }
     ]),
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    NzIconModule
   ],
-  providers: [],
+  providers: [
+    { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#00ff00' },
+    { provide: NZ_ICONS, useValue: icons }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

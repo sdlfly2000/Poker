@@ -6,6 +6,7 @@ using Poker.Cache;
 using Poker.Models;
 using System.Linq;
 using Poker.Hubs.Actions;
+using System.Collections.Generic;
 
 namespace Poker.Hubs
 {
@@ -13,18 +14,28 @@ namespace Poker.Hubs
     {
         private readonly ISessionCache _sessionCache;
         private readonly IAddClientAction _addClientAction;
+        private readonly IDispatchVoteAction _dispatchVoteAction;
 
         public PokingHub(
             ISessionCache sessionCache, 
-            IAddClientAction addClientAction)
+            IAddClientAction addClientAction,
+            IDispatchVoteAction dispatchVoteAction)
         {
             _sessionCache = sessionCache;
             _addClientAction = addClientAction;
+            _dispatchVoteAction = dispatchVoteAction;
         }
 
-        public async Task Session(string userName, string message)
+        public async Task UpdateCurrentClient(string currentClient, string sessionId)
         {
-            await Clients.All.SendAsync("messageReceived", userName, message);
+            var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
+            var oCurrentClient = JsonConvert.DeserializeObject<Client>(currentClient);
+            if (vote != null)
+            {
+                vote.Clients = UpdateClient(vote.Clients, oCurrentClient);
+
+                _dispatchVoteAction.Dispatch(Clients, vote);
+            }            
         }
 
         public string GetSession(string sessionId)
@@ -40,12 +51,39 @@ namespace Poker.Hubs
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
             _sessionCache.UpdateVote(_addClientAction.Add(vote, oClient));
 
-            var jsonVote = JsonConvert.SerializeObject(vote);
-
-            Clients.Group(vote.SessionId).SendAsync("NewClientJoin", jsonVote);
+            _dispatchVoteAction.Dispatch(Clients, vote);
             Groups.AddToGroupAsync(oClient.ConnectionId, vote.SessionId);
 
-            return jsonVote;
+            return JsonConvert.SerializeObject(
+                _dispatchVoteAction.Mask(vote, oClient.ConnectionId));
+        }
+
+        public async Task SetOpenToPublic(string sessionId)
+        {
+            var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
+            
+            if(vote != null)
+            {
+                vote.IsPublicOpen = true;
+                _dispatchVoteAction.Dispatch(Clients, vote);
+            }
+        }
+
+        public async Task ClearVotes(string sessionId)
+        {
+            var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
+
+            if (vote != null)
+            {
+                vote.IsPublicOpen = false;
+                vote.Clients = vote.Clients
+                    .Select(c => {
+                        c.Vote = null;
+                        c.IsReady = false;
+                        return c;
+                    }).ToList();
+                _dispatchVoteAction.Dispatch(Clients, vote);
+            }
         }
 
         #region Override
@@ -57,7 +95,7 @@ namespace Poker.Hubs
             if (vote != null)
             {
                 Groups.RemoveFromGroupAsync(connectionId, vote.SessionId);
-                Clients.Group(vote.SessionId).SendAsync("NewClientJoin", JsonConvert.SerializeObject(vote));
+                _dispatchVoteAction.Dispatch(Clients, vote);
 
                 if(vote.Clients.Count == 0)
                 {
@@ -66,6 +104,23 @@ namespace Poker.Hubs
             }
 
             return base.OnDisconnectedAsync(exception);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private IList<Client> UpdateClient(IList<Client> clients, Client client)
+        {
+            var results = new List<Client>();
+            results.AddRange(clients.Select(c =>
+            {
+                return c.ConnectionId.Equals(client.ConnectionId)
+                ? client
+                : c;
+            }));
+
+            return results;
         }
 
         #endregion
