@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 import * as signalR from '@microsoft/signalr';
 import { promise } from 'protractor';
+import { Vote } from "../models/vote.model";
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,10 @@ export class VoteService {
 
   public GetSession(sessionId: string): Observable<boolean> {
     return this.httpClient.get<boolean>('api/Vote/GetSession?sessionId=' + sessionId);
+  }
+
+  public GetVote(sessionId: string): Observable<Vote> {
+    return this.httpClient.get<Vote>('api/Vote/GetVote?sessionId=' + sessionId);
   }
 
   public UpdateCurrentClient(currentClient: string, sessionId: string): void {
