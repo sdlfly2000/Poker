@@ -56,7 +56,7 @@ export class VoteService {
     return this.httpClient.get<Vote>('api/Vote/GetVote?sessionId=' + sessionId);
   }
 
-  public UpdateCurrentClient(currentClient: string, sessionId: string): void {
-    this.connection.send("UpdateCurrentClient", currentClient, sessionId);
+  public UpdateCurrentClient(currentClient: string, sessionId: string): Promise<any> {
+    return this.connection.invoke<any>("UpdateCurrentClient", currentClient, sessionId);
   }
 }

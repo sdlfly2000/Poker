@@ -26,7 +26,7 @@ namespace Poker.Hubs
             _dispatchVoteAction = dispatchVoteAction;
         }
 
-        public async Task UpdateCurrentClient(string currentClient, string sessionId)
+        public string UpdateCurrentClient(string currentClient, string sessionId)
         {
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
             var oCurrentClient = JsonConvert.DeserializeObject<Client>(currentClient);
@@ -35,7 +35,11 @@ namespace Poker.Hubs
                 vote.Clients = UpdateClient(vote.Clients, oCurrentClient);
 
                 _dispatchVoteAction.Dispatch(Clients, vote);
-            }            
+
+                return JsonConvert.SerializeObject(_dispatchVoteAction.Mask(vote, oCurrentClient.ConnectionId));
+            }
+
+            return null;
         }
 
         public string GetSession(string sessionId)

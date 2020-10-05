@@ -8,8 +8,6 @@ import { VoteService } from './vote.service';
 import { Vote } from '../models/vote.model'
 import { Client } from '../models/client.model'
 
-
-
 @Component({
   selector: 'app-vote',
   templateUrl: './vote.component.html',
@@ -65,7 +63,12 @@ export class VoteComponent {
     if (this.SelectedPoint != undefined) {
       this.CurrentClient.Vote = this.SelectedPoint;
       this.CurrentClient.IsReady = true;
-      this.voteService.UpdateCurrentClient(JSON.stringify(this.CurrentClient), this.SessionId);
+      this.voteService.UpdateCurrentClient(JSON.stringify(this.CurrentClient), this.SessionId)
+        .then((vote: string) => {
+          if (vote != undefined) {
+            this.vote = JSON.parse(vote);
+          }
+        });
     }
   }
 
