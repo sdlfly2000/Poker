@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { NzMessageService } from 'ng-zorro-antd/message';
-
 import { VoteService } from './vote.service';
 import { Vote } from '../models/vote.model'
 import { Client } from '../models/client.model'
@@ -22,14 +20,11 @@ export class VoteComponent {
   public SessionId: string;
   public SelectedPoint: string;
 
-  public isVotesUpdated: boolean = false;
-
   constructor(
     private voteService: VoteService,
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private message: NzMessageService) {
+    private router: Router) {
 
     this.joinForm = this.formBuilder.group({
       userName: new FormControl(null, Validators.required)
@@ -78,20 +73,6 @@ export class VoteComponent {
 
   public ClearVotes(): void {
     this.voteService.ClearVotes(this.SessionId);
-  }
-
-  public UpdateVote(): void {
-    this.isVotesUpdated = true;
-    this.voteService.GetVote(this.SessionId).subscribe(
-      (vote: Vote) => {
-        this.vote = vote;
-      },
-      (error) => {
-        this.message.error(error);
-      },
-      () => {
-        this.isVotesUpdated = false;
-      });
   }
 
   private IsSessionCreated(sessionId: string): void {

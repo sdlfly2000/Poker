@@ -58,10 +58,6 @@
   <nz-divider></nz-divider>
 
   <div nz-row>
-    <button nz-button nz-col nzSpan="2" nzType="primary" [nzLoading]="isVotesUpdated" (click)="UpdateVote()">Update!</button>
-  </div>
-
-  <div nz-row>
     <div nz-col nzSpan="15">
       <nz-table #voteResults [nzFrontPagination]="false" [nzData]="vote.Clients">
         <thead>
