@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { VoteComponent } from './voteApp/vote/vote.component';
 import { VoteCreateComponent } from './voteApp/voteCreate/votecreate.component';
+import { AdminComponent } from './voteApp/admin/admin.component';
 
 import { IconDefinition } from '@ant-design/icons-angular';
 import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
@@ -20,7 +21,8 @@ const icons: IconDefinition[] = [CheckCircleTwoTone, CloseCircleTwoTone];
     AppComponent,
     NavMenuComponent,
     VoteComponent,
-    VoteCreateComponent
+    VoteCreateComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -29,7 +31,8 @@ const icons: IconDefinition[] = [CheckCircleTwoTone, CloseCircleTwoTone];
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: VoteCreateComponent, pathMatch: 'full' },
-      { path: 'vote/:sessionId', component: VoteComponent, pathMatch: 'full' }
+      { path: 'vote/:sessionId', component: VoteComponent, pathMatch: 'full' },
+      { path: 'admin', component: AdminComponent, pathMatch: 'full' }
     ]),
     NgZorroAntdModule,
     NzIconModule

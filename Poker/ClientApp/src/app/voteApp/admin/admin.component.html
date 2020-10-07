@@ -1,0 +1,12 @@
+<nz-table #votesResults [nzFrontPagination]="false" [nzData]="votes" *ngIf="votes">
+  <thead>
+    <tr>
+      <th>Session Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vote of votesResults.data">
+      <td>{{vote.SessionId}}</td>
+    </tr>
+  </tbody>
+</nz-table>

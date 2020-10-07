@@ -62,7 +62,7 @@ namespace Poker.Hubs
                 _dispatchVoteAction.Mask(vote, oClient.ConnectionId));
         }
 
-        public async Task SetOpenToPublic(string sessionId)
+        public void SetOpenToPublic(string sessionId)
         {
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
             
@@ -73,7 +73,7 @@ namespace Poker.Hubs
             }
         }
 
-        public async Task ClearVotes(string sessionId)
+        public void ClearVotes(string sessionId)
         {
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
 

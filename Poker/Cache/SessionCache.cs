@@ -52,7 +52,7 @@ namespace Poker.Cache
         public void RemoveSession(string sessionId)
         {
             var sessionIds = GetAllSessionIds();
-            if (sessionIds.Any(s => s.Equals(sessionId)))
+            if (sessionIds.Any(s => s.Equals(Guid.Parse(sessionId))))
             {
                 sessionIds.Remove(Guid.Parse(sessionId));
                 _memoryCache.Set("SessionIds", sessionIds);

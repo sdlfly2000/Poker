@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\voteApp\admin\admin.component.ts" />
+    <None Remove="ClientApp\src\app\voteApp\admin\admin.service.ts" />
     <None Remove="ClientApp\src\app\voteApp\models\client.model.ts" />
     <None Remove="ClientApp\src\app\voteApp\models\vote.model.ts" />
     <None Remove="ClientApp\src\app\voteApp\voteCreate\votecreate.component.ts" />
@@ -34,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\voteApp\admin\admin.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\voteApp\admin\admin.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\voteApp\models\client.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\voteApp\models\vote.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\voteApp\vote\vote.service.ts" />

@@ -3,8 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import * as signalR from '@microsoft/signalr';
-import { promise } from 'protractor';
-import { Vote } from "../models/vote.model";
 
 @Injectable({
   providedIn: 'root'

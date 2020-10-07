@@ -43,5 +43,20 @@ namespace Poker.Controllers
             Response.StatusCode = isSessionIdExist ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound;
             return isSessionIdExist;
         }
+
+        [HttpGet]
+        public string GetAllVotes()
+        {
+            var allSessionIds = _sessionCache.GetAllSessionIds() ?? new List<Guid>();
+            var votes = allSessionIds.Select(id => _sessionCache.GetVote(id)).ToList();
+            Response.StatusCode = (int)HttpStatusCode.OK;
+            return JsonConvert.SerializeObject(votes);
+        }
+
+        [HttpGet]
+        public void RemoveVote(string sessionId)
+        {
+            _sessionCache.RemoveSession(sessionId);
+        }
     }
 }
