@@ -52,6 +52,9 @@ namespace Poker.Hubs
         public string JoinSession(string client, string sessionId)
         {
             var oClient = JsonConvert.DeserializeObject<Client>(client);
+
+            RemoveClient(oClient.ConnectionId);
+
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
             _sessionCache.UpdateVote(_addClientAction.Add(vote, oClient));
 
@@ -95,18 +98,7 @@ namespace Poker.Hubs
         public override Task OnDisconnectedAsync(Exception exception)
         {
             var connectionId = Context.ConnectionId;
-            var vote = _sessionCache.RemoveClient(connectionId);
-            if (vote != null)
-            {
-                Groups.RemoveFromGroupAsync(connectionId, vote.SessionId);
-                _dispatchVoteAction.Dispatch(Clients, vote);
-
-                if(vote.Clients.Count == 0)
-                {
-                    _sessionCache.RemoveSession(vote.SessionId);
-                }
-            }
-
+            RemoveClient(connectionId);
             return base.OnDisconnectedAsync(exception);
         }
 
@@ -125,6 +117,20 @@ namespace Poker.Hubs
             }));
 
             return results;
+        }
+
+        private bool RemoveClient(string connectionId)
+        {
+            var votes = _sessionCache.RemoveClient(connectionId);
+            if (votes != null)
+            {
+                votes.Select(v => Groups.RemoveFromGroupAsync(connectionId, v.SessionId)).ToList();
+                votes.Select(v => _dispatchVoteAction.Dispatch(Clients, v)).ToList();
+
+                votes.Where(v => v.Clients.Count == 0).Select(v => _sessionCache.RemoveSession(v.SessionId)).ToList();
+            }
+
+            return true;
         }
 
         #endregion

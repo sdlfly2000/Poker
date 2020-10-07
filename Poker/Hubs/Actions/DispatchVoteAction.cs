@@ -7,7 +7,7 @@ namespace Poker.Hubs.Actions
 {
     public class DispatchVoteAction : IDispatchVoteAction
     {
-        public void Dispatch(IHubCallerClients clients, Vote vote)
+        public bool Dispatch(IHubCallerClients clients, Vote vote)
         {
             if (vote != null)
             {
@@ -16,6 +16,8 @@ namespace Poker.Hubs.Actions
                         "NewClientJoin",
                         JsonConvert.SerializeObject(Mask(vote, c.ConnectionId)))).ToList();
             }
+
+            return true;
         }
 
         public Vote Mask(Vote vote, string currentConnnectionId)

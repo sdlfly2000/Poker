@@ -2,11 +2,17 @@
   <thead>
     <tr>
       <th>Session Id</th>
+      <th>Client No.</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let vote of votesResults.data">
       <td>{{vote.SessionId}}</td>
+      <td>{{vote.Clients.length}}</td>
     </tr>
   </tbody>
 </nz-table>
+
+<div nz-row nzType="flex" nzJustify="center" style="margin-top:5px;">
+  <button nz-button nzType="primary" (click)="GetVotes()">Refresh</button>
+</div>

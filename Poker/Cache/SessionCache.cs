@@ -32,24 +32,24 @@ namespace Poker.Cache
             return _memoryCache.Set(sessionId, vote);
         }
 
-        public Vote RemoveClient(string connectionId)
+        public IList<Vote> RemoveClient(string connectionId)
         {
             var sessionId = GetAllSessionIds() ?? new List<Guid>();
-            var vote = sessionId
+            var votes = sessionId
                 .Select(GetVote)
-                .FirstOrDefault(v => v.Clients.Any(c => c.ConnectionId.Equals(connectionId)));
+                .Where(v => v.Clients.Any(c => c.ConnectionId.Equals(connectionId)))
+                .ToList();
 
-            if (vote != null)
+            if (votes != null)
             {
-                var clientToRemove = vote.Clients.FirstOrDefault(c => c.ConnectionId.Equals(connectionId));
-                vote.Clients.Remove(clientToRemove);
-                return UpdateVote(vote);
+                votes.Select(v => v.Clients.Remove(v.Clients.FirstOrDefault(c => c.ConnectionId.Equals(connectionId)))).ToList();
+                return votes.Select(UpdateVote).ToList();
             }
 
             return null;
         }
 
-        public void RemoveSession(string sessionId)
+        public bool RemoveSession(string sessionId)
         {
             var sessionIds = GetAllSessionIds();
             if (sessionIds.Any(s => s.Equals(Guid.Parse(sessionId))))
@@ -59,6 +59,7 @@ namespace Poker.Cache
             }
 
             _memoryCache.Remove(sessionId);
+            return true;
         }
 
         public IList<Guid> GetAllSessionIds()

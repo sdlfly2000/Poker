@@ -5,7 +5,7 @@ namespace Poker.Hubs.Actions
 {
     public interface IDispatchVoteAction
     {
-        void Dispatch(IHubCallerClients clients, Vote vote);
+        bool Dispatch(IHubCallerClients clients, Vote vote);
 
         Vote Mask(Vote vote, string currentConnnectionId);
     }

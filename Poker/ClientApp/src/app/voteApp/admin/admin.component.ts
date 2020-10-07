@@ -19,7 +19,7 @@ export class AdminComponent {
 
   }
 
-  private GetVotes(): void {
+  public GetVotes(): void {
     this.adminService.GetAllVotes().subscribe(
       (votes: Vote[]) => {
         this.votes = votes;

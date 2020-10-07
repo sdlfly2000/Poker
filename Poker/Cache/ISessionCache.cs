@@ -12,12 +12,12 @@ namespace Poker.Cache
 
         Vote UpdateVote(Vote vote);
 
-        Vote RemoveClient(string connectionId);
+        IList<Vote> RemoveClient(string connectionId);
 
         IList<Guid> AddSessionId(Guid sessionId);
 
         IList<Guid> GetAllSessionIds();
 
-        void RemoveSession(string sessionId);
+        bool RemoveSession(string sessionId);
     }
 }
