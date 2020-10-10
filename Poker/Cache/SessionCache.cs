@@ -10,9 +10,24 @@ namespace Poker.Cache
     {
         private readonly IMemoryCache _memoryCache;
 
+        private MemoryCacheEntryOptions _memoryCacheEntryOptions = new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+                    };
+
         public SessionCache(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
+
+            _memoryCacheEntryOptions.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration
+               {
+                    EvictionCallback = (key, value, reason, status) =>
+                        {
+                            var sessionIds = GetAllSessionIds();
+                            sessionIds.Remove(Guid.Parse((string)key));
+                            _memoryCache.Set("SessionIds", sessionIds);
+                        }
+               });
         }
 
         public Vote GetVote(Guid sessionId)
@@ -22,14 +37,14 @@ namespace Poker.Cache
 
         public Vote SetVote(Guid sessionId, Vote vote)
         {
-            return _memoryCache.Set(sessionId, vote);
+            return _memoryCache.Set(sessionId, vote, _memoryCacheEntryOptions);
         }
 
         public Vote UpdateVote(Vote vote)
         {
             var sessionId = vote.SessionId;
             _memoryCache.Remove(sessionId);
-            return _memoryCache.Set(sessionId, vote);
+            return _memoryCache.Set(sessionId, vote, _memoryCacheEntryOptions);
         }
 
         public IList<Vote> RemoveClient(string connectionId)
