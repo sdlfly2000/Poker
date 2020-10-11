@@ -1,0 +1,29 @@
+name: Poker build and Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: 'Deploy to Ubuntu'
+      uses: genietim/ftp-action@releases/v4
+      with:
+        host: ${{ Poker.FTP_SERVER }}
+        user: ${{ Poker.FTP_USERNAME }}
+        password: ${{ Poker.FTP_PASSWORD }}
+        localDir: "dist"
+        remoteDir: "Projects/Poker"
