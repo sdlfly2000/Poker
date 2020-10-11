@@ -25,5 +25,5 @@ jobs:
         host: 182.61.37.221
         user: sdlfly2000
         password: sdl@1215
-        localDir: $GITHUB_WORKSPACE
+        localDir: ${{ GITHUB_WORKSPACE }}
         remoteDir: "Projects/Poker"
