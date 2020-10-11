@@ -25,5 +25,5 @@ jobs:
         host: 182.61.37.221
         user: sdlfly2000
         password: sdl@1215
-        localDir: ${{ GITHUB_WORKSPACE }}
+        localDir: "/home/runner/work/Poker/Poker/Poker/bin/Release/netcoreapp3.1/"
         remoteDir: "Projects/Poker"
