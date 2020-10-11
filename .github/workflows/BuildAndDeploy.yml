@@ -20,10 +20,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       
     - name: Deploy to Ubuntu
-      uses: genietim/ftp-action@releases
+      uses: sebastianpopp/ftp-action@v2.0.0
       with:
         host: 182.61.37.221
         user: sdlfly2000
         password: sdl@1215
-        localDir: "/home/runner/work/Poker/Poker/Poker/bin/Release/netcoreapp3.1/"
+        localDir: $GITHUB_WORKSPACE
         remoteDir: "Projects/Poker"
