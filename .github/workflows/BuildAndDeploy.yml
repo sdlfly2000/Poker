@@ -22,8 +22,8 @@ jobs:
     - name: 'Deploy to Ubuntu'
       uses: genietim/ftp-action@releases/v4
       with:
-        host: ${{ Poker.FTP_SERVER }}
-        user: ${{ Poker.FTP_USERNAME }}
-        password: ${{ Poker.FTP_PASSWORD }}
-        localDir: "dist"
+        host: 182.61.37.221
+        user: sdlfly2000
+        password: sdl@1215
+        localDir: "/home/runner/work/Poker/Poker/Poker/bin/Release/netcoreapp3.1/"
         remoteDir: "Projects/Poker"
