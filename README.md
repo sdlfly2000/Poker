@@ -1,5 +1,7 @@
 # Poker
 
+![Poker build and Deploy](https://github.com/sdlfly2000/Poker/workflows/Poker%20build%20and%20Deploy/badge.svg)
+
 ## Introduction
 
 Poker will help your team on voting work efforts (for scrum team), with mulit players participating. Poker is open source without any limitation on using or modification. It would be better if you contribute your improvements to here.
