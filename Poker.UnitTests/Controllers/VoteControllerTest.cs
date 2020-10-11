@@ -4,18 +4,17 @@ using Moq;
 using Poker.Cache;
 using Poker.Models;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
 using Poker.Controllers;
 
 namespace Poker.UnitTests.Controllers
 {
-    using Microsoft.AspNetCore.Http;
-
     [TestClass]
     public class VoteControllerTest
     {
         private Guid _sessionId1 = Guid.NewGuid();
         private Guid _sessionId2 = Guid.NewGuid();
+        private Guid _sessionIdNotExist = Guid.NewGuid();
 
         private VoteController _controller;
 
@@ -43,10 +42,9 @@ namespace Poker.UnitTests.Controllers
 
             // Act
             var vote = _controller.CreateSession();
-            var oVote = JsonConvert.DeserializeObject<Vote>(vote);
 
             // Asserts
-            Assert.IsNotNull(oVote);
+            Assert.IsNotNull(vote);
         }
 
         [TestMethod, TestCategory("UnitTest")]
@@ -55,10 +53,37 @@ namespace Poker.UnitTests.Controllers
             // Arrange
 
             // Act
-            var result = _controller.GetSession(_sessionId1.ToString());
+            var result = (OkObjectResult)_controller.GetSession(_sessionId1.ToString());
 
             // Asserts
             Assert.IsNotNull(result);
+            Assert.AreEqual(true, result.Value);
+        }
+
+        [TestMethod, TestCategory("UnitTest")]
+        public void VoteController_GIVEN_NotExist_sessionId_WHEN_GetSession_THEN_false()
+        {
+            // Arrange
+
+            // Act
+            var result = (OkObjectResult)_controller.GetSession(_sessionIdNotExist.ToString());
+
+            // Asserts
+            Assert.IsNotNull(result);
+            Assert.AreEqual(false, result.Value);
+        }
+
+        [TestMethod, TestCategory("UnitTest")]
+        public void VoteController_GIVEN_Empty_sessionId_WHEN_GetSession_THEN_false()
+        {
+            // Arrange
+
+            // Act
+            var result = (OkObjectResult)_controller.GetSession(string.Empty);
+
+            // Asserts
+            Assert.IsNotNull(result);
+            Assert.AreEqual(false, result.Value);
         }
     }
 }

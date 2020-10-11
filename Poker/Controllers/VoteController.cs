@@ -37,8 +37,13 @@ namespace Poker.Controllers
         [HttpGet]
         public IActionResult GetSession(string sessionId)
         {
-            var allSessionIds = _sessionCache.GetAllSessionIds() ?? new List<Guid>();
-            var isSessionIdExist = allSessionIds.Any(s => s.Equals(Guid.Parse(sessionId)));
+            var isSessionIdExist = false;
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                var allSessionIds = _sessionCache.GetAllSessionIds() ?? new List<Guid>();
+                isSessionIdExist = allSessionIds.Any(s => s.Equals(Guid.Parse(sessionId)));
+            }
+
             return Ok(isSessionIdExist);
         }
 
