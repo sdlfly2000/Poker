@@ -4,7 +4,6 @@ using Poker.Cache;
 using Poker.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Newtonsoft.Json;
 
 namespace Poker.Controllers
@@ -21,7 +20,7 @@ namespace Poker.Controllers
         }
 
         [HttpGet]
-        public string CreateSession()
+        public IActionResult CreateSession()
         {
             var guid = Guid.NewGuid();
             var vote = new Vote
@@ -32,25 +31,28 @@ namespace Poker.Controllers
             _sessionCache.SetVote(guid, vote);
             _sessionCache.AddSessionId(guid);
 
-            return JsonConvert.SerializeObject(vote);
+            return Ok(JsonConvert.SerializeObject(vote));
         }
 
         [HttpGet]
-        public bool GetSession(string sessionId)
+        public IActionResult GetSession(string sessionId)
         {
             var allSessionIds = _sessionCache.GetAllSessionIds() ?? new List<Guid>();
             var isSessionIdExist = allSessionIds.Any(s => s.Equals(Guid.Parse(sessionId)));
-            Response.StatusCode = isSessionIdExist ? (int)HttpStatusCode.OK : (int)HttpStatusCode.NotFound;
-            return isSessionIdExist;
+            return Ok(isSessionIdExist);
         }
 
         [HttpGet]
-        public string GetAllVotes()
+        public IActionResult GetAllVotes()
         {
             var allSessionIds = _sessionCache.GetAllSessionIds() ?? new List<Guid>();
             var votes = allSessionIds.Select(id => _sessionCache.GetVote(id)).ToList();
-            Response.StatusCode = (int)HttpStatusCode.OK;
-            return JsonConvert.SerializeObject(votes);
+            if (votes.Any())
+            {
+                return Ok(JsonConvert.SerializeObject(votes));
+            }
+
+            return NoContent();
         }
 
         [HttpGet]

@@ -16,18 +16,20 @@ export class AdminComponent {
     private message: NzMessageService) {
 
     this.GetVotes();
-
   }
 
   public GetVotes(): void {
     this.adminService.GetAllVotes().subscribe(
       (votes: Vote[]) => {
+        if (votes == null) {
+          this.message.remove();
+          this.message.info("No Session Found.");
+        }
         this.votes = votes;
       },
       (error) => {
-        this.message.error(error);
+        this.message.error(error.message);
       }
-    )
+    );
   }
-
 }
