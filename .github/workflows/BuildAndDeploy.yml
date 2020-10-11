@@ -19,8 +19,8 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
       
-    - name: 'Deploy to Ubuntu'
-      uses: genietim/ftp-action@releases/v4
+    - name: Deploy to Ubuntu
+      uses: genietim/ftp-action@releases
       with:
         host: 182.61.37.221
         user: sdlfly2000
