@@ -34,26 +34,50 @@
 
   <div>
     <nz-radio-group [(ngModel)]="SelectedPoint" [nzButtonStyle]="'solid'" (ngModelChange)="OnSelectPoint()">
-      <div nz-row nzType="flex">
-        <label nz-radio-button nzValue="0">0 points</label>
-        <label nz-radio-button nzValue="0.5">0.5 points</label>
-        <label nz-radio-button nzValue="1">1 points</label>
-        <label nz-radio-button nzValue="2">2 points</label>
+      <div nz-row nzType="flex" nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="0">0 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="0.5">0.5 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="1">1 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="2">2 points</label>
+        </div>
       </div>
-      <div nz-row nzType="flex">
-        <label nz-radio-button nzValue="3">3 points</label>
-        <label nz-radio-button nzValue="5">5 points</label>
-        <label nz-radio-button nzValue="8">8 points</label>
-        <label nz-radio-button nzValue="13">13 points</label>
+      <div nz-row nzType="flex" nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="3">3 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="5">5 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="8">8 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="13">13 points</label>
+        </div>
       </div>
-      <div nz-row nzType="flex">
-        <label nz-radio-button nzValue="20">20 points</label>
-        <label nz-radio-button nzValue="40">40 points</label>
-        <label nz-radio-button nzValue="100">100 points</label>
-        <label nz-radio-button nzValue="?">?</label>
+      <div nz-row nzType="flex" nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="20">20 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="40">40 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="100">100 points</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="?">?</label>
+        </div>
       </div>
-    </nz-radio-group>
-  </div>
+  </nz-radio-group>
+</div>
 
   <nz-divider></nz-divider>
 
