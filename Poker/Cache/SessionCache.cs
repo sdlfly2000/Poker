@@ -23,9 +23,12 @@ namespace Poker.Cache
                {
                     EvictionCallback = (key, value, reason, status) =>
                         {
-                            var sessionIds = GetAllSessionIds();
-                            sessionIds.Remove(Guid.Parse((string)key));
-                            _memoryCache.Set("SessionIds", sessionIds);
+                            if (!((Vote)value).Clients.Any())
+                            {
+                                var sessionIds = GetAllSessionIds();
+                                sessionIds.Remove(Guid.Parse((string)key));
+                                _memoryCache.Set("SessionIds", sessionIds);
+                            }
                         }
                });
         }

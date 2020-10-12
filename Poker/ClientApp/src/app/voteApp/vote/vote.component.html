@@ -23,54 +23,54 @@
     <h3 nz-title>{{CurrentClient.UserName}}</h3>
   </div>
 
-  <nz-divider></nz-divider>
+  <nz-divider nzText="Actions" nzOrientation="left"></nz-divider>
 
   <div nz-row>
     <button nz-button nz-col nzSpan="2" nzType="defalut" (click)="ClearVotes()">Clear Votes</button>
     <button nz-button nz-col nzSpan="2" nzType="defalut" (click)="ShowVotes()">Show Votes</button>
   </div>
 
-  <nz-divider></nz-divider>
+  <nz-divider nzText="Points" nzOrientation="left"></nz-divider>
 
   <div>
     <nz-radio-group [(ngModel)]="SelectedPoint" [nzButtonStyle]="'solid'" (ngModelChange)="OnSelectPoint()">
       <div nz-row nzType="flex" nzGutter="16">
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="0">0 points</label>
+          <label nz-radio-button nzValue="0">0</label>
         </div>
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="0.5">0.5 points</label>
+          <label nz-radio-button nzValue="0.5">0.5</label>
         </div>
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="1">1 points</label>
+          <label nz-radio-button nzValue="1">1</label>
         </div>
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="2">2 points</label>
-        </div>
-      </div>
-      <div nz-row nzType="flex" nzGutter="16">
-        <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="3">3 points</label>
-        </div>
-        <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="5">5 points</label>
-        </div>
-        <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="8">8 points</label>
-        </div>
-        <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="13">13 points</label>
+          <label nz-radio-button nzValue="2">2</label>
         </div>
       </div>
       <div nz-row nzType="flex" nzGutter="16">
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="20">20 points</label>
+          <label nz-radio-button nzValue="3">3</label>
         </div>
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="40">40 points</label>
+          <label nz-radio-button nzValue="5">5</label>
         </div>
         <div nz-col class="gutter-row" nzSpan="6">
-          <label nz-radio-button nzValue="100">100 points</label>
+          <label nz-radio-button nzValue="8">8</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="13">13</label>
+        </div>
+      </div>
+      <div nz-row nzType="flex" nzGutter="16">
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="20">20</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="40">40</label>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <label nz-radio-button nzValue="100">100</label>
         </div>
         <div nz-col class="gutter-row" nzSpan="6">
           <label nz-radio-button nzValue="?">?</label>
