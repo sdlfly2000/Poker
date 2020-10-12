@@ -9,21 +9,24 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.301
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Publish
-      run: dotnet publish --configuration Release --framework netcoreapp3.1 --no-self-contained --no-restore
+#     - uses: actions/checkout@v2
+#     - name: Setup .NET Core
+#       uses: actions/setup-dotnet@v1
+#       with:
+#         dotnet-version: 3.1.301
+#     - name: Install dependencies
+#       run: dotnet restore
+#     - name: Publish
+#       run: dotnet publish --configuration Release --framework netcoreapp3.1 --no-self-contained --no-restore
       
-    - name: Deploy to Ubuntu
-      uses: sebastianpopp/ftp-action@v2.0.0
-      with:
-        host: 182.61.37.221
-        user: sdlfly2000
-        password: sdl@1215
-        localDir: "/home/runner/work/Poker/Poker/Poker/bin/Release/netcoreapp3.1/publish/"
-        remoteDir: "Projects/Poker"
+#     - name: Deploy to Ubuntu
+#       uses: sebastianpopp/ftp-action@v2.0.0
+#       with:
+#         host: 182.61.37.221
+#         user: sdlfly2000
+#         password: sdl@1215
+#         localDir: "/home/runner/work/Poker/Poker/Poker/bin/Release/netcoreapp3.1/publish/"
+#         remoteDir: "Projects/Poker"
+
+    - name: Restart Web Server
+      run: ssh sdlfly2000@182.61.37.221 "sudo service supervisor restart"
