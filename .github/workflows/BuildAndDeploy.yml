@@ -29,7 +29,8 @@ jobs:
 #         remoteDir: "Projects/Poker"
 
     - name: Restart Web Server
-      run:  exec 8<>/dev/tcp/182.61.37.221/4002
-            echo -n -e '\x00\x03\x02' >&8
-            exec 8>&-
-            exec 8<&-
+      run: |
+        exec 8<>/dev/tcp/182.61.37.221/4002
+        echo -n -e '\x00\x03\x02' >&8
+        exec 8>&-
+        exec 8<&-
