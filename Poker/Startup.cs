@@ -11,6 +11,7 @@ using Poker.Hubs.Actions;
 namespace Poker
 {
     using Common.Core.DependencyInjection;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -28,7 +29,7 @@ namespace Poker
 
             services.AddMemoryCache();
 
-            DIModule.RegisterDomain(services, "Poker");
+            DIModule.RegisterDomain(services, new List<string> { "Poker" });
             
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

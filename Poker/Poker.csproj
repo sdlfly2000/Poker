@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdeaActivator.Common.Core" Version="1.0.2" />
+    <PackageReference Include="IdeaActivator.Common.Core" Version="1.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.5" />
   </ItemGroup>
 

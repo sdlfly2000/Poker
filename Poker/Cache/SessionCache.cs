@@ -4,22 +4,23 @@ using Poker.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Core.DependencyInjection;
+using Common.Core.Cache;
 
 namespace Poker.Cache
 {
     [ServiceLocate(typeof(ISessionCache))]
     public class SessionCache : ISessionCache
     {
-        private readonly IMemoryCache _memoryCache;
+        private readonly ICacheService _cacheService;
 
         private MemoryCacheEntryOptions _memoryCacheEntryOptions = new MemoryCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
                     };
 
-        public SessionCache(IMemoryCache memoryCache)
+        public SessionCache(ICacheService cacheService)
         {
-            _memoryCache = memoryCache;
+            _cacheService = cacheService;
 
             _memoryCacheEntryOptions.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration
                {
@@ -29,7 +30,7 @@ namespace Poker.Cache
                             {
                                 var sessionIds = GetAllSessionIds();
                                 sessionIds.Remove(Guid.Parse((string)key));
-                                _memoryCache.Set("SessionIds", sessionIds);
+                                _cacheService.Set("SessionIds", sessionIds);
                             }
                         }
                });
@@ -37,19 +38,19 @@ namespace Poker.Cache
 
         public Vote GetVote(Guid sessionId)
         {
-           return  _memoryCache.Get<Vote>(sessionId);
+           return _cacheService.Get<Vote>(sessionId.ToString());
         }
 
         public Vote SetVote(Guid sessionId, Vote vote)
         {
-            return _memoryCache.Set(sessionId, vote, _memoryCacheEntryOptions);
+            return _cacheService.Set(sessionId.ToString(), vote, _memoryCacheEntryOptions);
         }
 
         public Vote UpdateVote(Vote vote)
         {
             var sessionId = vote.SessionId;
-            _memoryCache.Remove(sessionId);
-            return _memoryCache.Set(sessionId, vote, _memoryCacheEntryOptions);
+            _cacheService.Remove(sessionId);
+            return _cacheService.Set(sessionId, vote, _memoryCacheEntryOptions);
         }
 
         public IList<Vote> RemoveClient(string connectionId)
@@ -75,16 +76,16 @@ namespace Poker.Cache
             if (sessionIds.Any(s => s.Equals(Guid.Parse(sessionId))))
             {
                 sessionIds.Remove(Guid.Parse(sessionId));
-                _memoryCache.Set("SessionIds", sessionIds);
+                _cacheService.Set("SessionIds", sessionIds);
             }
 
-            _memoryCache.Remove(sessionId);
+            _cacheService.Remove(sessionId);
             return true;
         }
 
         public IList<Guid> GetAllSessionIds()
         {
-            return _memoryCache.Get<IList<Guid>>("SessionIds");
+            return _cacheService.Get<IList<Guid>>("SessionIds");
         }
 
         public bool IsSessionExist(string sessionId)
@@ -101,7 +102,7 @@ namespace Poker.Cache
                 sessionIds.Add(sessionId);
             }
 
-            return _memoryCache.Set("SessionIds", sessionIds);
+            return _cacheService.Set("SessionIds", sessionIds);
         }
     }
 }
