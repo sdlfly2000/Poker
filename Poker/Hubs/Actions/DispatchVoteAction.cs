@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using Poker.Models;
 using System.Linq;
+using Common.Core.DependencyInjection;
 
 namespace Poker.Hubs.Actions
 {
+    [ServiceLocate(typeof(IDispatchVoteAction))]
     public class DispatchVoteAction : IDispatchVoteAction
     {
         public bool Dispatch(IHubCallerClients clients, Vote vote)

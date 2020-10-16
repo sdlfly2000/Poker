@@ -3,9 +3,11 @@ using Microsoft.Extensions.Caching.Memory;
 using Poker.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Core.DependencyInjection;
 
 namespace Poker.Cache
 {
+    [ServiceLocate(typeof(ISessionCache))]
     public class SessionCache : ISessionCache
     {
         private readonly IMemoryCache _memoryCache;

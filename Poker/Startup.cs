@@ -10,6 +10,8 @@ using Poker.Hubs.Actions;
 
 namespace Poker
 {
+    using Common.Core.DependencyInjection;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,10 +28,8 @@ namespace Poker
 
             services.AddMemoryCache();
 
-            services.AddTransient<ISessionCache, SessionCache>();
-            services.AddTransient<IAddClientAction, AddClientAction>();
-            services.AddTransient<IDispatchVoteAction, DispatchVoteAction>();
-
+            DIModule.RegisterDomain(services, "Poker");
+            
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
