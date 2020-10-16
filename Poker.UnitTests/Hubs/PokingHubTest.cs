@@ -22,9 +22,12 @@ namespace Poker.UnitTests.Hubs
 
         private Guid SessionId1 = Guid.NewGuid();
         private Guid SessionId2 = Guid.NewGuid();
+        private Guid SessionId3 = Guid.NewGuid();
 
         private Client _client1;
         private Client _client2;
+
+        private Vote _vote;
 
         private Mock<ISessionCache> _sessionCacheMock;
         private Mock<IAddClientAction> _addClientActionMock;
@@ -51,7 +54,12 @@ namespace Poker.UnitTests.Hubs
                                 Clients = new List<Client> { _client2 }
                             };
 
-            var votes = new List<Vote> { vote1, vote2 };
+            _vote = new Vote
+            {
+                SessionId = SessionId3.ToString()
+            };
+
+            var votes = new List<Vote> { vote1, vote2, _vote };
 
             _sessionCacheMock = new Mock<ISessionCache>();
             _addClientActionMock = new Mock<IAddClientAction>();
@@ -79,6 +87,13 @@ namespace Poker.UnitTests.Hubs
             _dispatchVoteActionMock
                 .Setup(d => d.Mask(It.IsAny<Vote>(), It.IsAny<string>()))
                 .Returns<Vote, string>((vote, id) => vote);
+
+            _addClientActionMock
+                .Setup(a => a.Add(It.IsAny<Vote>(), It.IsAny<Client>()))
+                .Returns<Vote, Client>((vote, client) => { 
+                vote.Clients.Add(client); 
+                return vote; 
+            });
 
             groupManager
                 .Setup(g => g.AddToGroupAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -138,7 +153,31 @@ namespace Poker.UnitTests.Hubs
             Assert.IsTrue(vote.Clients.Any(c => c.ConnectionId.Equals(ConnectionId2)));
         }
 
+        [TestMethod, TestCategory("UnitTest")]
+        public void PokingHub_GIVEN_sessionId_WHEN_SetOpenToPublic_THEN_vote_True_IsPublicOpen()
+        {
+            // Arrange
 
+            // Act
+            _pokingHub.SetOpenToPublic(SessionId3.ToString());
 
+            // Assert
+            Assert.IsNotNull(_vote);
+            Assert.IsTrue(_vote.IsPublicOpen);
+        }
+
+        [TestMethod, TestCategory("UnitTest")]
+        public void PokingHub_GIVEN_sessionId_WHEN_ClearVotes_THEN_vote_cleaned()
+        {
+            // Arrange
+            _vote.IsPublicOpen = true;
+
+            // Act
+            _pokingHub.ClearVotes(SessionId3.ToString());
+
+            // Assert
+            Assert.IsNotNull(_vote);
+            Assert.IsFalse(_vote.IsPublicOpen);
+        }
     }
 }
