@@ -9,7 +9,7 @@ namespace Poker.Hubs.Actions
     [ServiceLocate(typeof(IDispatchVoteAction))]
     public class DispatchVoteAction : IDispatchVoteAction
     {
-        public bool Dispatch(IHubCallerClients clients, Vote vote)
+        public bool DispatchVote(IHubCallerClients clients, Vote vote)
         {
             if (vote != null)
             {
@@ -17,6 +17,18 @@ namespace Poker.Hubs.Actions
                     .Select(c => clients.Client(c.ConnectionId).SendAsync(
                         "NewClientJoin",
                         JsonConvert.SerializeObject(Mask(vote, c.ConnectionId)))).ToList();
+            }
+
+            return true;
+        }
+
+        public bool DispatchClearVote(IHubCallerClients clients, Vote vote)
+        {
+            if (vote != null)
+            {
+                vote.Clients
+                    .Select(c => clients.Client(c.ConnectionId).SendAsync(
+                        "ClearVote")).ToList();
             }
 
             return true;

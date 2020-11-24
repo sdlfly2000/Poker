@@ -103,5 +103,10 @@ export class VoteComponent {
       (vote: string) => {
         this.vote = JSON.parse(vote);
       });
+
+    this.voteService.SetEventOn("ClearVote",
+      () => {
+        this.SelectedPoint = "";
+      });
   }
 }

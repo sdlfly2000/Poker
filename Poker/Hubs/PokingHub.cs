@@ -34,7 +34,7 @@ namespace Poker.Hubs
             {
                 vote.Clients = UpdateClient(vote.Clients, oCurrentClient);
 
-                _dispatchVoteAction.Dispatch(Clients, vote);
+                _dispatchVoteAction.DispatchVote(Clients, vote);
 
                 return JsonConvert.SerializeObject(_dispatchVoteAction.Mask(vote, oCurrentClient.ConnectionId));
             }
@@ -58,7 +58,7 @@ namespace Poker.Hubs
             var vote = _sessionCache.GetVote(Guid.Parse(sessionId));
             _sessionCache.UpdateVote(_addClientAction.Add(vote, oClient));
 
-            _dispatchVoteAction.Dispatch(Clients, vote);
+            _dispatchVoteAction.DispatchVote(Clients, vote);
             Groups.AddToGroupAsync(oClient.ConnectionId, vote.SessionId);
 
             return JsonConvert.SerializeObject(
@@ -72,7 +72,7 @@ namespace Poker.Hubs
             if(vote != null)
             {
                 vote.IsPublicOpen = true;
-                _dispatchVoteAction.Dispatch(Clients, vote);
+                _dispatchVoteAction.DispatchVote(Clients, vote);
             }
         }
 
@@ -89,7 +89,8 @@ namespace Poker.Hubs
                         c.IsReady = false;
                         return c;
                     }).ToList();
-                _dispatchVoteAction.Dispatch(Clients, vote);
+                _dispatchVoteAction.DispatchVote(Clients, vote);
+                _dispatchVoteAction.DispatchClearVote(Clients, vote);
             }
         }
 
@@ -125,7 +126,7 @@ namespace Poker.Hubs
             if (votes != null)
             {
                 votes.Select(v => Groups.RemoveFromGroupAsync(connectionId, v.SessionId)).ToList();
-                votes.Select(v => _dispatchVoteAction.Dispatch(Clients, v)).ToList();
+                votes.Select(v => _dispatchVoteAction.DispatchVote(Clients, v)).ToList();
 
                 votes.Where(v => v.Clients.Count == 0).Select(v => _sessionCache.RemoveSession(v.SessionId)).ToList();
             }
