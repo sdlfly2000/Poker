@@ -81,10 +81,6 @@ namespace Poker.UnitTests.Hubs
                 .Returns<string>((connectionId) => true);
 
             _dispatchVoteActionMock
-                .Setup(d => d.Dispatch(It.IsAny<IHubCallerClients>(), It.IsAny<Vote>()))
-                .Returns(null);
-
-            _dispatchVoteActionMock
                 .Setup(d => d.Mask(It.IsAny<Vote>(), It.IsAny<string>()))
                 .Returns<Vote, string>((vote, id) => vote);
 
